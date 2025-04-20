@@ -1,37 +1,20 @@
-name: Deploy to GitHub Pages
+name: Deploy Static Website to GitHub Pages
 
 on:
   push:
     branches:
-      - main  # Adjust this to your branch name
+      - main  # or 'master' if that's your default branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js (if using any build tool like npm)
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14'  # Change according to your needs
-
-    - name: Install dependencies (if you use npm for any JS tooling)
-      run: npm install  # You can omit this if you're not using npm
-
-    - name: Build static site (if you need to build SCSS or other tools)
-      run: npm run build  # Adjust this if you are using SCSS or any build tool
-
-    - name: Upload artifact (this step is optional if you're using a build tool)
-      uses: actions/upload-artifact@v3
-      with:
-        name: website-artifact
-        path: ./  # Adjust path if your build output is inside a subfolder
-
-    - name: Deploy to GitHub Pages
-      uses: actions/configure-pages@v3
-
-    - name: Deploy pages
-      uses: actions/deploy-pages@v2
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # Update if your site is in a folder like ./docs or ./build
